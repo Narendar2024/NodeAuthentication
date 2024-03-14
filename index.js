@@ -38,7 +38,7 @@ const store = new MongoDBStore({
 app.use(session({
     secret: 'secretkey',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: store
 }));
 
@@ -121,6 +121,13 @@ app.post('/user-login', async (req, res) => {
         console.error(`${error}`);
     }
 })
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) throw err;
+        res.redirect('/signup')
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server running successfully @ ${PORT}`);
 });
